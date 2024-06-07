@@ -1,0 +1,26 @@
+name: Example
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    defaults:
+      run:
+        shell: pwsh
+
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: cmake --version
+      - name: Configure
+        run: >
+          cmake -S . -B ./build
+          -DCMAKE_BUILD_TYPE:STRING=Release
+          -DBUILD_SHARED_LIBS:BOOL=OFF
+          -DCMAKE_COMPILE_WARNING_AS_ERROR:BOOL=ON
+      - run: cmake --build ./build --config Release --parallel 4 --verbose
+      - run: cd ./build && ctest --build-config Release --verbose

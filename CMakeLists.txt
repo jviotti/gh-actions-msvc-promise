@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.22)
+project(example VERSION 1.0.0 LANGUAGES CXX)
+enable_testing()
+add_executable(example test.cc)
+if(MSVC)
+  target_compile_options(example PRIVATE /std:c++20 /MT)
+endif()
+add_test(NAME Example COMMAND example)
